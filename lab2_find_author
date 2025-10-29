@@ -1,0 +1,22 @@
+import csv
+
+
+def find_author(book_file):
+    book_file.seek(0)
+    user_author = input("Which author would you like to find?\n").strip().lower()
+    books = []
+    reader = csv.DictReader(book_file, delimiter=';')
+    for row in reader:
+        title = row["Book-Title"]
+        author = row["Book-Author"].strip().lower()
+        price = float(row["Price"].strip().replace(",", "."))
+        if price > 200 and author == user_author:
+            books.append(title)
+    return books
+
+
+with open("books-en.csv", encoding="latin-1") as book_file:
+    books = find_author(book_file)
+    print(f"Found books by this author {len(books)}")
+    for i, title in enumerate(books, 1):
+        print(f"{i}. {title}")
